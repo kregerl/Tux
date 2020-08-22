@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+license = "MIT"
+
+[[mods]]
+  modId="tux"
+  version="0.1.0"
+  displayName="Tux"
+  issueTrackerURL="http://my.issue.tracker/"
+  displayURL="http://example.com/"
+  logoFile="examplemod.png"
+  authors="AreUThreatningMe"
+  description='''
+  Tux penguins are tempted and bred with cod and will lay eggs in the same way that turtles do.
+  Tux penguins will spawn in snowy biomes such as snowy tundra, snowy beach, and frozen rivers.
+  '''
+[[dependencies.examplemod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="AFTER"
+    side="BOTH"

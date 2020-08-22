@@ -1,0 +1,76 @@
+{
+    "variants": {
+        "eggs=1,hatch=0": [
+            { "model": "tux:block/penguin_egg" },
+            { "model": "tux:block/penguin_egg", "y": 90 },
+            { "model": "tux:block/penguin_egg", "y": 180 },
+            { "model": "tux:block/penguin_egg", "y": 270 }
+        ],
+          "eggs=1,hatch=1": [
+            { "model": "tux:block/slightly_cracked_penguin_egg" },
+            { "model": "tux:block/slightly_cracked_penguin_egg", "y": 90 },
+            { "model": "tux:block/slightly_cracked_penguin_egg", "y": 180 },
+            { "model": "tux:block/slightly_cracked_penguin_egg", "y": 270 }
+        ],
+        "eggs=1,hatch=2": [
+            { "model": "tux:block/very_cracked_penguin_egg" },
+            { "model": "tux:block/very_cracked_penguin_egg", "y": 90 },
+            { "model": "tux:block/very_cracked_penguin_egg", "y": 180 },
+            { "model": "tux:block/very_cracked_penguin_egg", "y": 270 }
+        ],
+        "eggs=2,hatch=0": [
+            { "model": "tux:block/two_penguin_eggs" },
+            { "model": "tux:block/two_penguin_eggs", "y": 90 },
+            { "model": "tux:block/two_penguin_eggs", "y": 180 },
+            { "model": "tux:block/two_penguin_eggs", "y": 270 }
+        ],
+        "eggs=2,hatch=1": [
+            { "model": "tux:block/two_slightly_cracked_penguin_eggs" },
+            { "model": "tux:block/two_slightly_cracked_penguin_eggs", "y": 90 },
+            { "model": "tux:block/two_slightly_cracked_penguin_eggs", "y": 180 },
+            { "model": "tux:block/two_slightly_cracked_penguin_eggs", "y": 270 }
+        ],
+        "eggs=2,hatch=2": [
+            { "model": "tux:block/two_very_cracked_penguin_eggs" },
+            { "model": "tux:block/two_very_cracked_penguin_eggs", "y": 90 },
+            { "model": "tux:block/two_very_cracked_penguin_eggs", "y": 180 },
+            { "model": "tux:block/two_very_cracked_penguin_eggs", "y": 270 }
+        ],
+        "eggs=3,hatch=0": [
+            { "model": "tux:block/three_penguin_eggs" },
+            { "model": "tux:block/three_penguin_eggs", "y": 90 },
+            { "model": "tux:block/three_penguin_eggs", "y": 180 },
+            { "model": "tux:block/three_penguin_eggs", "y": 270 }
+        ],
+        "eggs=3,hatch=1": [
+            { "model": "tux:block/three_slightly_cracked_penguin_eggs" },
+            { "model": "tux:block/three_slightly_cracked_penguin_eggs", "y": 90 },
+            { "model": "tux:block/three_slightly_cracked_penguin_eggs", "y": 180 },
+            { "model": "tux:block/three_slightly_cracked_penguin_eggs", "y": 270 }
+        ],
+        "eggs=3,hatch=2": [
+            { "model": "tux:block/three_very_cracked_penguin_eggs" },
+            { "model": "tux:block/three_very_cracked_penguin_eggs", "y": 90 },
+            { "model": "tux:block/three_very_cracked_penguin_eggs", "y": 180 },
+            { "model": "tux:block/three_very_cracked_penguin_eggs", "y": 270 }
+        ],
+        "eggs=4,hatch=0": [
+            { "model": "tux:block/four_penguin_eggs" },
+            { "model": "tux:block/four_penguin_eggs", "y": 90 },
+            { "model": "tux:block/four_penguin_eggs", "y": 180 },
+            { "model": "tux:block/four_penguin_eggs", "y": 270 }
+        ],
+        "eggs=4,hatch=1": [
+            { "model": "tux:block/four_slightly_cracked_penguin_eggs" },
+            { "model": "tux:block/four_slightly_cracked_penguin_eggs", "y": 90 },
+            { "model": "tux:block/four_slightly_cracked_penguin_eggs", "y": 180 },
+            { "model": "tux:block/four_slightly_cracked_penguin_eggs", "y": 270 }
+        ],
+        "eggs=4,hatch=2": [
+            { "model": "tux:block/four_very_cracked_penguin_eggs" },
+            { "model": "tux:block/four_very_cracked_penguin_eggs", "y": 90 },
+            { "model": "tux:block/four_very_cracked_penguin_eggs", "y": 180 },
+            { "model": "tux:block/four_very_cracked_penguin_eggs", "y": 270 }
+        ]
+    }
+}
