@@ -6,9 +6,9 @@ license = "MIT"
   modId="tux"
   version="0.1"
   displayName="Tux"
-  issueTrackerURL="http://my.issue.tracker/"
-  displayURL="http://example.com/"
-  logoFile="examplemod.png"
+  issueTrackerURL="https://github.com/kregerl/Tux/issues"
+  displayURL="https://www.curseforge.com/minecraft/mc-mods/tux"
+  logoFile="tuxLogo.png"
   authors="AreUThreatningMe"
   description='''
   Tux penguins are tempted and bred with cod and will lay eggs in the same way that turtles do.
