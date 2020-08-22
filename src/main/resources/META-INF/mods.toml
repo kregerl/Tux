@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
   modId="tux"
-  version="0.1.0"
+  version="0.1"
   displayName="Tux"
   issueTrackerURL="http://my.issue.tracker/"
   displayURL="http://example.com/"
