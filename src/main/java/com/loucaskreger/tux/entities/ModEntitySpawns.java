@@ -1,7 +1,10 @@
-package com.loucaskreger.tux.init;
+package com.loucaskreger.tux.entities;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.loucaskreger.tux.init.ModEntities;
+
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;

@@ -4,8 +4,12 @@ import java.util.Random;
 import com.loucaskreger.tux.block.PenguinEggBlock;
 import com.loucaskreger.tux.init.ModBlocks;
 import com.loucaskreger.tux.init.ModEntities;
+import com.loucaskreger.tux.init.ModItems;
+import com.loucaskreger.tux.init.ModSoundEvents;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -15,6 +19,7 @@ import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.entity.ai.goal.PanicGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -29,9 +34,12 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -54,13 +62,14 @@ public class PenguinEntity extends AnimalEntity {
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new PenguinEntity.MateGoal(this, 1.0D));
-		this.goalSelector.addGoal(1, new PenguinEntity.LayEggGoal(this, 1.0D));
-		this.goalSelector.addGoal(1, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.COD), false));
-		this.goalSelector.addGoal(1, new FollowParentGoal(this, 1.1D));
-		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-		this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.4D));
+		this.goalSelector.addGoal(1, new PenguinEntity.MateGoal(this, 1.0D));
+		this.goalSelector.addGoal(2, new PenguinEntity.LayEggGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.COD, Items.SALMON, Items.TROPICAL_FISH, Items.COOKED_COD, Items.COOKED_SALMON), false));
+		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 	}
 
 	@Override
@@ -96,6 +105,31 @@ public class PenguinEntity extends AnimalEntity {
 		return stack.getItem() == Items.COD;
 	}
 
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return ModSoundEvents.PENGUIN_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return ModSoundEvents.PENGUIN_HURT.get();
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return ModSoundEvents.PENGUIN_DEATH.get();
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState blockIn) {
+		this.playSound(SoundEvents.ENTITY_PARROT_STEP, 0.15F, 1.0F);
+	}
+	
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(ModItems.PENGUIN_SPAWN_EGG.get());
+		
+	}
 	/**
 	 * Use this to make penguin stay within 25 blocks of egg.
 	 * 

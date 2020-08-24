@@ -2,11 +2,14 @@ package com.loucaskreger.tux;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.loucaskreger.tux.entities.ModEntitySpawns;
 import com.loucaskreger.tux.entities.render.PenguinEntityRender;
 import com.loucaskreger.tux.init.ModBlocks;
 import com.loucaskreger.tux.init.ModEntities;
-import com.loucaskreger.tux.init.ModEntitySpawns;
 import com.loucaskreger.tux.init.ModItems;
+import com.loucaskreger.tux.init.ModSoundEvents;
+
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,6 +38,7 @@ public class Tux {
 		final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		ModBlocks.BLOCKS.register(bus);
 		ModItems.ITEMS.register(bus);
+		ModSoundEvents.SOUND_EVENTS.register(bus);
 		ModEntities.ENTITIES.register(bus);
 		bus.addListener(this::setupClient);
 		bus.addListener(this::setupCommon);
