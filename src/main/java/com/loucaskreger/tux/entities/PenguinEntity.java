@@ -48,13 +48,11 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 
 public class PenguinEntity extends AnimalEntity {
 
 	private PenguinEntity groupLeader;
 	private int groupSize = 1;
-	public BlockPos pos = this.getPosition();
 
 	private static final DataParameter<Boolean> HAS_EGG = EntityDataManager.createKey(PenguinEntity.class,
 			DataSerializers.BOOLEAN);
@@ -144,10 +142,6 @@ public class PenguinEntity extends AnimalEntity {
 
 	}
 
-	public boolean isSnowing() {
-		return (this.world.getBiome(pos).getPrecipitation() == Biome.RainType.RAIN && this.world.isRaining());
-	}
-
 	public boolean isGroupLeader() {
 		return this.groupSize > 1;
 	}
@@ -188,6 +182,10 @@ public class PenguinEntity extends AnimalEntity {
 
 	public boolean inRangeOfGroupLeader() {
 		return this.getDistanceSq(this.groupLeader) <= 121.0D;
+	}
+	
+	public PenguinEntity getGroupLeader() {
+		return this.groupLeader;
 	}
 
 	public void moveToGroupLeader() {

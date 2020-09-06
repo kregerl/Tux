@@ -2,13 +2,12 @@ package com.loucaskreger.tux.entities.goal;
 
 import java.util.List;
 import java.util.function.Predicate;
-
-import javax.swing.text.html.parser.Entity;
-
+import com.loucaskreger.tux.entities.ModEntitySpawns;
 import com.loucaskreger.tux.entities.PenguinEntity;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.biome.Biome;
 
 public class HuddleGoal extends Goal {
 
@@ -17,9 +16,9 @@ public class HuddleGoal extends Goal {
 	private int field_222740_c;
 
 	public HuddleGoal(PenguinEntity taskOwnerIn) {
-	      this.taskOwner = taskOwnerIn;
-	      this.field_222740_c = this.func_212825_a(taskOwnerIn);
-	   }
+		this.taskOwner = taskOwnerIn;
+		this.field_222740_c = this.func_212825_a(taskOwnerIn);
+	}
 
 	protected int func_212825_a(PenguinEntity taskOwnerIn) {
 		return 200 + taskOwnerIn.getRNG().nextInt(200) % 20;
@@ -30,9 +29,11 @@ public class HuddleGoal extends Goal {
 	 * necessary for execution in this method as well.
 	 */
 	public boolean shouldExecute() {
-		if (this.taskOwner.isGroupLeader()) {
+		if (this.taskOwner.isGroupLeader() && isCorrectWeather()) {
+			taskOwner.setMotionMultiplier(null, new Vec3d(0.25f, 0.25f, 0.25f));
+//			taskOwner.addPotionEffect(new EffectInstance(Effects.GLOWING, 100));
 			return false;
-		} else if (this.taskOwner.hasGroupLeader() && this.taskOwner.world.isRaining()) {
+		} else if (this.taskOwner.hasGroupLeader() && isCorrectWeather()) {
 			return true;
 		} else if (this.field_222740_c > 0) {
 			--this.field_222740_c;
@@ -44,20 +45,27 @@ public class HuddleGoal extends Goal {
 			};
 			List<PenguinEntity> list = this.taskOwner.world.getEntitiesWithinAABB(this.taskOwner.getClass(),
 					this.taskOwner.getBoundingBox().grow(8.0D, 8.0D, 8.0D), predicate);
-			PenguinEntity abstractgroupfishentity = list.stream()
-					.filter(PenguinEntity::canGroupGrow).findAny().orElse(this.taskOwner);
+			PenguinEntity abstractgroupfishentity = list.stream().filter(PenguinEntity::canGroupGrow).findAny()
+					.orElse(this.taskOwner);
 			abstractgroupfishentity.func_212810_a(list.stream().filter((p_212823_0_) -> {
 				return !p_212823_0_.hasGroupLeader();
 			}));
-			return this.taskOwner.hasGroupLeader() && this.taskOwner.world.isRaining();
+			return this.taskOwner.hasGroupLeader() && isCorrectWeather();
 		}
+	}
+
+	private boolean isCorrectWeather() {
+		BlockPos pos = taskOwner.getPosition();
+		Biome biome = taskOwner.world.getBiome(pos);
+		return this.taskOwner.world.isRaining() && this.taskOwner.world.canSeeSky(this.taskOwner.getPosition())
+				&& ModEntitySpawns.biomesToSpawnIn.contains(biome);
 	}
 
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
 	public boolean shouldContinueExecuting() {
-		return this.taskOwner.hasGroupLeader() && this.taskOwner.inRangeOfGroupLeader() && this.taskOwner.world.isRaining();
+		return this.taskOwner.hasGroupLeader() && this.taskOwner.inRangeOfGroupLeader() && isCorrectWeather();
 	}
 
 	/**
@@ -72,6 +80,8 @@ public class HuddleGoal extends Goal {
 	 * another one
 	 */
 	public void resetTask() {
+		if (taskOwner.isGroupLeader())
+			this.taskOwner.setMotionMultiplier(null, new Vec3d(1.0f, 1.0f, 1.0f));
 		this.taskOwner.leaveGroup();
 	}
 

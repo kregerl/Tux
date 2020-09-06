@@ -12,8 +12,8 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModEntitySpawns {
-	private static List<Biome> biomesToSpawnIn = Arrays.asList(Biomes.FROZEN_RIVER, Biomes.SNOWY_BEACH,
-			Biomes.SNOWY_TUNDRA);
+	public static List<Biome> biomesToSpawnIn = Arrays.asList(Biomes.FROZEN_RIVER, Biomes.SNOWY_BEACH,
+			Biomes.SNOWY_TUNDRA, Biomes.ICE_SPIKES, Biomes.DEEP_FROZEN_OCEAN, Biomes.FROZEN_OCEAN);
 
 	public static void SpawnPenguin() {
 		ForgeRegistries.BIOMES.getValues().stream().filter(biome -> biomesToSpawnIn.contains(biome))

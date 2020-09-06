@@ -1,3 +1,6 @@
 {
-	"parent": "tux:block/penguin_egg"
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "tux:item/penguin_egg"
+    }
 }
