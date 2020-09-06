@@ -18,7 +18,7 @@ public class ModEntitySpawns {
 	public static void SpawnPenguin() {
 		ForgeRegistries.BIOMES.getValues().stream().filter(biome -> biomesToSpawnIn.contains(biome))
 				.forEach(biome -> biome.getSpawns(EntityClassification.CREATURE)
-						.add(new SpawnListEntry(ModEntities.PENGUIN_ENTITY.get(), 7, 3, 8)));
+						.add(new SpawnListEntry(ModEntities.PENGUIN_ENTITY.get(), 7, 4, 10)));
 	}
 
 }

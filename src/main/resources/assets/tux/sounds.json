@@ -5,6 +5,10 @@
       {
         "name": "tux:penguin_ambient",
         "stream": true
+      },
+            {
+        "name": "tux:nothing",
+        "stream": true
       }
     ]
   },

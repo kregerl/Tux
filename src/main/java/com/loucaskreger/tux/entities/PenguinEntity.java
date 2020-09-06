@@ -1,7 +1,11 @@
 package com.loucaskreger.tux.entities;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import com.loucaskreger.tux.block.PenguinEggBlock;
+import com.loucaskreger.tux.entities.goal.HuddleGoal;
 import com.loucaskreger.tux.init.ModBlocks;
 import com.loucaskreger.tux.init.ModEntities;
 import com.loucaskreger.tux.init.ModItems;
@@ -9,7 +13,6 @@ import com.loucaskreger.tux.init.ModSoundEvents;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -40,11 +43,19 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 public class PenguinEntity extends AnimalEntity {
+
+	private PenguinEntity groupLeader;
+	private int groupSize = 1;
+	public BlockPos pos = this.getPosition();
+
 	private static final DataParameter<Boolean> HAS_EGG = EntityDataManager.createKey(PenguinEntity.class,
 			DataSerializers.BOOLEAN);
 
@@ -65,7 +76,9 @@ public class PenguinEntity extends AnimalEntity {
 		this.goalSelector.addGoal(0, new PanicGoal(this, 1.4D));
 		this.goalSelector.addGoal(1, new PenguinEntity.MateGoal(this, 1.0D));
 		this.goalSelector.addGoal(2, new PenguinEntity.LayEggGoal(this, 1.0D));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.COD, Items.SALMON, Items.TROPICAL_FISH, Items.COOKED_COD, Items.COOKED_SALMON), false));
+		this.goalSelector.addGoal(3, new HuddleGoal(this));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.COD, Items.SALMON,
+				Items.TROPICAL_FISH, Items.COOKED_COD, Items.COOKED_SALMON), false));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
@@ -124,12 +137,103 @@ public class PenguinEntity extends AnimalEntity {
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
 		this.playSound(SoundEvents.ENTITY_PARROT_STEP, 0.15F, 1.0F);
 	}
-	
+
 	@Override
 	public ItemStack getPickedResult(RayTraceResult target) {
 		return new ItemStack(ModItems.PENGUIN_SPAWN_EGG.get());
-		
+
 	}
+
+	public boolean isSnowing() {
+		return (this.world.getBiome(pos).getPrecipitation() == Biome.RainType.RAIN && this.world.isRaining());
+	}
+
+	public boolean isGroupLeader() {
+		return this.groupSize > 1;
+	}
+
+	public boolean hasGroupLeader() {
+		return this.groupLeader != null && this.groupLeader.isAlive();
+	}
+
+	public boolean canGroupGrow() {
+		return this.isGroupLeader() && this.groupSize < this.getMaxGroupSize();
+	}
+
+	public int getMaxGroupSize() {
+		return 10;
+	}
+
+	public PenguinEntity func_212803_a(PenguinEntity groupLeaderIn) {
+		this.groupLeader = groupLeaderIn;
+		groupLeaderIn.increaseGroupSize();
+		return groupLeaderIn;
+	}
+
+	public void func_212810_a(Stream<PenguinEntity> p_212810_1_) {
+		p_212810_1_.limit((long) (this.getMaxGroupSize() - this.groupSize)).filter((p_212801_1_) -> {
+			return p_212801_1_ != this;
+		}).forEach((p_212804_1_) -> {
+			p_212804_1_.func_212803_a(this);
+		});
+	}
+
+	private void increaseGroupSize() {
+		++this.groupSize;
+	}
+
+	private void decreaseGroupSize() {
+		--this.groupSize;
+	}
+
+	public boolean inRangeOfGroupLeader() {
+		return this.getDistanceSq(this.groupLeader) <= 121.0D;
+	}
+
+	public void moveToGroupLeader() {
+		if (this.hasGroupLeader()) {
+			this.getNavigator().tryMoveToEntityLiving(this.groupLeader, 1.0D);
+		}
+
+	}
+
+	public void tick() {
+		super.tick();
+		if (this.isGroupLeader() && this.world.rand.nextInt(200) == 1) {
+			List<PenguinEntity> list = this.world.getEntitiesWithinAABB(this.getClass(),
+					this.getBoundingBox().grow(8.0D, 8.0D, 8.0D));
+			if (list.size() <= 1) {
+				this.groupSize = 1;
+			}
+		}
+	}
+
+	public void leaveGroup() {
+		this.groupLeader.decreaseGroupSize();
+		this.groupLeader = null;
+	}
+
+	@Nullable
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason,
+			@Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+		if (spawnDataIn == null) {
+			spawnDataIn = new PenguinEntity.GroupData(this);
+		} else {
+			this.func_212803_a(((PenguinEntity.GroupData) spawnDataIn).groupLeader);
+		}
+
+		return spawnDataIn;
+	}
+
+	public static class GroupData implements ILivingEntityData {
+		public final PenguinEntity groupLeader;
+
+		public GroupData(PenguinEntity groupLeaderIn) {
+			this.groupLeader = groupLeaderIn;
+		}
+	}
+
 	/**
 	 * Use this to make penguin stay within 25 blocks of egg.
 	 * 
