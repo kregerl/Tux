@@ -9,8 +9,8 @@
     "AreUThreateningMe"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "",
+    "sources": ""
   },
 
   "license": "CC0-1.0",
@@ -23,7 +23,6 @@
     ]
   },
   "mixins": [
-    "tux.mixins.json"
   ],
 
   "depends": {
