@@ -12,6 +12,7 @@ import com.loucaskreger.tux.init.ModItems;
 import com.loucaskreger.tux.init.ModSoundEvents;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -214,7 +215,7 @@ public class PenguinEntity extends AnimalEntity {
 	@Nullable
 	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason,
 			@Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-		super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+		super.onInitialSpawn(worldIn, difficultyIn, reason, null/*spawnDataIn*/, dataTag);
 		if (spawnDataIn == null) {
 			spawnDataIn = new PenguinEntity.GroupData(this);
 		} else {
@@ -329,12 +330,7 @@ public class PenguinEntity extends AnimalEntity {
 
 		@Override
 		protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
-			if (!worldIn.isAirBlock(pos.up())) {
-				return false;
-			} else {
-//				Block block = worldIn.getBlockState(pos).getBlock();
-				return true;
-			}
+			return (worldIn.getBlockState(pos).getBlock() == Blocks.GRASS_BLOCK || worldIn.getBlockState(pos).getBlock() == Blocks.DIRT);
 		}
 
 	}
