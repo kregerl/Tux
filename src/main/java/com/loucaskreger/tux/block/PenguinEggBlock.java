@@ -75,9 +75,7 @@ public class PenguinEggBlock extends Block {
 
 	}
 
-	private boolean hasProperHabitat(IBlockReader p_203168_1_, BlockPos p_203168_2_) {
-		/*Change to block that has snow on top only.*/
-//		return p_203168_1_.getBlockState(p_203168_2_.down()).getBlock() == Blocks.GRASS_BLOCK;
+	private boolean hasProperHabitat(IBlockReader blockReader, BlockPos pos) {
 		return true;
 	}
 

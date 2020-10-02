@@ -321,16 +321,17 @@ public class PenguinEntity extends AnimalEntity {
 			World world = this.penguin.world;
 			world.playSound((PlayerEntity) null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS,
 					0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
-			world.setBlockState(this.destinationBlock.up(), ModBlocks.PENGUIN_EGG.get().getDefaultState()
+			world.setBlockState(this.penguin.getPosition(), ModBlocks.PENGUIN_EGG.get().getDefaultState()
 					.with(PenguinEggBlock.EGGS, Integer.valueOf(this.penguin.rand.nextInt(4) + 1)), 3);
 			this.penguin.setHasEgg(false);
-			this.penguin.setInLove(600);
+//			this.penguin.setInLove(600);
+			this.penguin.resetInLove();
 
 		}
 
 		@Override
 		protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
-			return (worldIn.getBlockState(pos).getBlock() == Blocks.GRASS_BLOCK || worldIn.getBlockState(pos).getBlock() == Blocks.DIRT);
+			return (!worldIn.isAirBlock(pos) && worldIn.getBlockState(pos).getBlock() != ModBlocks.PENGUIN_EGG.get());
 		}
 
 	}

@@ -58,7 +58,7 @@ public class HuddleGoal extends Goal {
 		BlockPos pos = taskOwner.getPosition();
 		Biome biome = taskOwner.world.getBiome(pos);
 		return this.taskOwner.world.isRaining() && this.taskOwner.world.canSeeSky(this.taskOwner.getPosition())
-				&& ModEntitySpawns.biomesToSpawnIn.contains(biome);
+				&& biome.getTempCategory() == Biome.TempCategory.COLD;
 	}
 
 	/**
