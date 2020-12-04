@@ -2,6 +2,7 @@ package com.loucaskreger.tux.entities.goal;
 
 import java.util.List;
 import java.util.function.Predicate;
+import com.loucaskreger.tux.entities.ModEntitySpawns;
 import com.loucaskreger.tux.entities.PenguinEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
@@ -57,7 +58,7 @@ public class HuddleGoal extends Goal {
 		BlockPos pos = taskOwner.getPosition();
 		Biome biome = taskOwner.world.getBiome(pos);
 		return this.taskOwner.world.isRaining() && this.taskOwner.world.canSeeSky(this.taskOwner.getPosition())
-				&& biome.getTemperature() <= 0.05;
+				&& ModEntitySpawns.isCorrectBiome(biome.getRegistryName());
 	}
 
 	/**

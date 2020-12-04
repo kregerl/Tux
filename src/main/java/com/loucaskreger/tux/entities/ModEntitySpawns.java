@@ -23,14 +23,21 @@ public class ModEntitySpawns {
 		if (name != null) {
 			Biome biomeReg = ForgeRegistries.BIOMES.getValue(name);
 			if (biomeReg != null) {
-				RegistryKey<Biome> key = RegistryKey.getOrCreateKey(ForgeRegistries.Keys.BIOMES, name);
-				Set<BiomeDictionary.Type> biomeTypes = BiomeDictionary.getTypes(key);
-				if (biomeTypes.stream().anyMatch(b -> b == BiomeDictionary.Type.SNOWY)) {
+				if (isCorrectBiome(name)) {
 					event.getSpawns().getSpawner(EntityClassification.CREATURE)
 							.add(new MobSpawnInfo.Spawners(ModEntities.PENGUIN_ENTITY.get(), 7, 4, 10));
 				}
 			}
 		}
+	}
+
+	public static boolean isCorrectBiome(ResourceLocation loc) {
+		RegistryKey<Biome> key = RegistryKey.getOrCreateKey(ForgeRegistries.Keys.BIOMES, loc);
+		Set<BiomeDictionary.Type> biomeTypes = BiomeDictionary.getTypes(key);
+		if (biomeTypes.stream().anyMatch(b -> b == BiomeDictionary.Type.SNOWY)) {
+			return true;
+		}
+		return false;
 	}
 
 }

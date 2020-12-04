@@ -58,8 +58,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class PenguinEntity extends AnimalEntity {
 
-	private Item[] breedingItems = new Item[] { Items.COD, Items.SALMON, Items.TROPICAL_FISH, Items.COOKED_COD,
-			Items.COOKED_SALMON };
+	private static final Item BREEDING_ITEM = Items.COD;
 	private PenguinEntity groupLeader;
 	private int groupSize = 1;
 
@@ -93,7 +92,7 @@ public class PenguinEntity extends AnimalEntity {
 		this.goalSelector.addGoal(1, new PenguinEntity.MateGoal(this, 1.0D));
 		this.goalSelector.addGoal(2, new PenguinEntity.LayEggGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new HuddleGoal(this));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, /*Ingredient.fromItems(breedingItems)*/ Ingredient.fromItems(Items.COD), false));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromItems(BREEDING_ITEM), false));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
@@ -128,10 +127,8 @@ public class PenguinEntity extends AnimalEntity {
 
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {
-		for (Item i : breedingItems) {
-			if (i == stack.getItem()) {
-				return true;
-			}
+		if (stack.getItem() == BREEDING_ITEM) {
+			return true;
 		}
 		return false;
 	}
