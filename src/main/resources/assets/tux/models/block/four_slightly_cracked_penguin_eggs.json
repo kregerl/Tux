@@ -1,0 +1,7 @@
+{
+    "parent": "tux:block/four_penguin_eggs",
+    "textures": {
+        "particle": "tux:block/penguin_egg_slightly_cracked",
+        "all": "tux:block/penguin_egg_slightly_cracked"
+    }
+}

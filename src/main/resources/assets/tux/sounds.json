@@ -1,0 +1,42 @@
+{
+	"penguin_ambient": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tux:penguin_ambient",
+        "stream": true
+      },
+            {
+        "name": "tux:nothing",
+        "stream": true
+      }
+    ]
+  },
+  	"penguin_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tux:penguin_hurt",
+        "stream": true
+      }
+    ]
+  },
+  	"penguin_death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tux:penguin_death",
+        "stream": true
+      }
+    ]
+  },
+  	"penguin_step": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "tux:penguin_step",
+        "stream": true
+      }
+    ]
+  }
+}
