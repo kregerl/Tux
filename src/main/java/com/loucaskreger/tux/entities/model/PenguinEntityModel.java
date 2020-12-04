@@ -24,6 +24,9 @@ public class PenguinEntityModel<T extends PenguinEntity> extends EntityModel<T> 
 	public PenguinEntityModel() {
 		super(RenderType::getEntityCutoutNoCull);
 
+		textureWidth = 64;
+		textureHeight = 64;
+
 		penguin = new ModelRenderer(this);
 		penguin.setRotationPoint(0.0F, 24.0F, 0.0F);
 		setRotationAngle(penguin, 0.0F, 3.1416F, 0.0F);
